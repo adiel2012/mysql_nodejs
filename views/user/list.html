@@ -1,0 +1,18 @@
+<html>
+    <body>
+        <%= model.length %>
+        <%= model %>
+        <table border=1 >
+            <% for(var i=0; i < model.length; i++) { %>
+            <tr>
+                <td><%= model[i].username %></td>
+                <td><%= model[i].name %></td>
+                <td><%= model[i].password %></td>
+                <td><a href="/user/details/<%= model[i].username %>" >details</a></td>
+                <td><a href="/user/delete/<%= model[i].username %>" >delete</a></td>
+                <td><a href="/user/edit/<%= model[i].username %>" >edit</a></td>
+            </tr>
+            <% } %>
+        </table>
+    </body>
+</html>

@@ -1,78 +1,47 @@
-/*var mysql      = require('mysql');
+var mysql      = require('mysql');
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
   password : '',
   database : 'test'
 });
-*/
 
-var aUserRepository = require('./data/repositories/UserRepository');
-var m_UserRepository = new aUserRepository();
 
-/*
-var auser = {username: 'username77',        name: 'caca',       password: 'miclave3'    };
-m_UserRepository.save(auser,function(err,res){
-		    if(err) throw err;
+var express = require("express");
+var bodyParser = require("body-parser");
+var app = express();
 
-		    console.log('Last insert ID:', res.insertId);
-		  });
-		  */
+app.use("/assets",express.static('assets'));
 
-/*
-m_UserRepository.getByUserName("acastano",function(err, user){
-	if(!err){
-		console.log(user);
-	}else{
-		console.log(err);
-	}	
-});*/
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
+
+//app.set("view engine","jade");
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+
+
+require('./routing.js')(app);
 
 /*
-m_UserRepository.remove("username77",function (err, result) {
-			   
-				if (err) throw err;
-
-				console.log('Deleted ' + result.affectedRows + ' rows');
-			  });*/
-			  
-	  
-var auser = {username: 'username134',        name: 'caca345',       password: 'miclave345'    };
-m_UserRepository.edit('user1',auser,function (err, numAffected) {
-  // numAffected is the number of updated documents
-            if (!err) {
-               console.log( 'notification!'+numAffected);
-            }
-            else {
-               console.log( err);
-           }
-});  
-
-
-
-	/*
-m_UserRepository.list(function(err, user){
-	console.log(user);
-	console.log(err);	
-});
-*/
-
-
-//console.log(loadUser);
-console.log("aa");
-
-
-
-/*
-connection.connect();
-
-connection.query('SELECT * from users', function(err, rows, fields) {
-  if (!err)
-    console.log('The solution is: ', rows);
-  else
-    console.log('Error while performing Query.');
+app.get("/closedtime",function(req,res){
+   console.log("it is clored");
+   res.render("cerrado");		
 });
 
-connection.end();
+
+var accesstime = require("./custom_middleware/houraccess");
+app.use(accesstime());
+
+app.get("/",function(req,res){
+   console.log("aa2");
+   res.render("index");		
+});
 
 */
+
+app.listen(8081);
+
+
+
+//  http://stackoverflow.com/questions/11369089/using-separate-controllers-and-routes-in-node-js

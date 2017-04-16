@@ -1,0 +1,10 @@
+<html>
+    <body>
+        <form action="/user/doedit" method="post">
+            <label>username:<%= model.username %></label><input type="hidden" value="<%= model.username %>" name="username" /><br/>
+            <label>name:</label><input type="text" value="<%= model.name %>" name="name" /><br/>
+            <label>username:</label><input type="text" value="<%= model.password %>" name="password" /> <br/>
+            <input type="submit" value="Submit" />
+        </form>
+    </body>
+</html>

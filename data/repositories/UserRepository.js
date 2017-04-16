@@ -1,47 +1,54 @@
 var mysql      = require('mysql');
-var connection = mysql.createConnection({
+/*var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
   password : '',
   database : 'test'
-});
+});*/
 function UserRepository() {
 	  
+	  this.getConnection = function(){
+		  return mysql.createConnection({
+			  host     : 'localhost',
+			  user     : 'root',
+			  password : '',
+			  database : 'test'
+			});
+		  
+	  }
 
 	  this.save = function(user,callback){
+		  var connection = this.getConnection();
 		    connection.connect();
 		    connection.query('INSERT INTO users SET ?', user, function(err,res){
 			connection.end();
+			console.log("before callback");
 		    callback(err,res);
+			console.log("after callback");
 		  });
 		  
-		  
-		  /*user.save(function (err) {
-             callback(err);               
-         });*/		  
+		 		  
 	  }
 	  
 	   this.getByUserName = function(ausername,callback){
-		   
+		    var connection = this.getConnection();
 			connection.connect();
 
 			connection.query('SELECT * from users where username = ?', ausername, function(err, rows, fields) {
 			connection.end();
 			if (!err){
-				callback(err, rows[0]); 
+				callback(err, JSON.parse(JSON.stringify(rows))[0]); 
 				console.log('The solution is: ', rows);
 			}
 				
 			else
 				callback(err, null); //console.log('Error while performing Query.');
 		});
-		   
-		 /* User.find({username:ausername}, function(err, user) {	      
-		     callback(err, user);
-          });*/
+		
 	  }
 	  
 	  this.remove = function(ausername,callback){
+		  var connection = this.getConnection();
 		    connection.connect();
 			connection.query(
 			  'DELETE FROM users WHERE username = ?',
@@ -56,6 +63,7 @@ function UserRepository() {
 	  }
 	  
 	  this.edit = function(ausername,user,callback){
+		var connection = this.getConnection();
         connection.connect();		  
         connection.query(
 		  'UPDATE users SET username = ?, name = ?, password = ? Where username = ?',
@@ -63,18 +71,14 @@ function UserRepository() {
 		  function (err, result) {
 			  connection.end();
 			if (err) throw err;
-
+                 callback(err, result);
 			console.log('Changed ' + result.changedRows + ' rows');
-		  }
-		);
-
-	  
-		  //User.update({username:ausername},  { name: user.name, username : user.username, password : user.password  }, { multi: true }, callback);		  
-	  }
+		  });
+        }
 	  
 	  
 	 this.list = function(callback){
-		 
+		var connection = this.getConnection();
 		connection.connect();
 
 		connection.query('SELECT * from users', function(err, rows, fields) {
@@ -83,10 +87,7 @@ function UserRepository() {
 			callback(err, rows); //console.log('The solution is: ', rows);
 		  else
 			console.log('Error while performing Query.');
-		});
-	  
-	 };
-	
-	 
+		});	  
+	 }; 
 }
 module.exports =  UserRepository;
