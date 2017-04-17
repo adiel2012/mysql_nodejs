@@ -21,7 +21,7 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
 
-require('./routing.js')(app);
+require('./routing.js')(express,app);
 
 /*
 app.get("/closedtime",function(req,res){

@@ -2,7 +2,7 @@
 var aUserRepository = require('../data/repositories/UserRepository');
 var m_UserRepository = new aUserRepository();
 
-module.exports = function(app) {
+module.exports = function(express,app) {
 	
 app.get('/user/index', function(req, res) { 
     console.log("index shown");	
